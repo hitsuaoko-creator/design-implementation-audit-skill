@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{report_title}}</title>
+    <style>
+      :root {
+        --bg: #f5f1e8;
+        --ink: #1f2530;
+        --muted: #5f6774;
+        --line: rgba(31, 37, 48, 0.12);
+        --panel: rgba(255, 255, 255, 0.84);
+        --panel-strong: #ffffff;
+        --accent: #1c6e5e;
+        --accent-soft: rgba(28, 110, 94, 0.1);
+        --danger: #cc4b37;
+        --warn: #cb7f22;
+        --info: #335fbe;
+        --ok: #2c7a57;
+        --shadow: 0 18px 60px rgba(31, 37, 48, 0.12);
+        --radius-xl: 28px;
+        --radius-lg: 20px;
+        --radius-md: 14px;
+        font-family: "Manrope", "Noto Sans SC", "PingFang SC", "Helvetica Neue", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at top left, rgba(28, 110, 94, 0.1), transparent 26%),
+          radial-gradient(circle at top right, rgba(203, 127, 34, 0.1), transparent 22%),
+          linear-gradient(180deg, #f9f6ef 0%, var(--bg) 100%);
+      }
+
+      body {
+        padding: 32px 20px 64px;
+      }
+
+      .report {
+        width: min(1280px, 100%);
+        margin: 0 auto;
+      }
+
+      .hero,
+      .panel,
+      .issue-card {
+        border: 1px solid var(--line);
+        background: var(--panel);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(14px);
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.7fr) minmax(280px, 0.9fr);
+        gap: 20px;
+        padding: 28px;
+      }
+
+      .eyebrow,
+      .section-label,
+      .meta-label {
+        margin: 0 0 10px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      .hero h1 {
+        font-size: clamp(30px, 4vw, 52px);
+        line-height: 1.02;
+        letter-spacing: -0.04em;
+      }
+
+      .hero__summary {
+        margin-top: 14px;
+        max-width: 52ch;
+        font-size: 16px;
+        line-height: 1.75;
+        color: var(--muted);
+      }
+
+      .hero__meta {
+        display: grid;
+        gap: 10px;
+      }
+
+      .meta-card {
+        padding: 16px 18px;
+        border-radius: var(--radius-lg);
+        background: var(--panel-strong);
+        border: 1px solid var(--line);
+      }
+
+      .meta-card strong {
+        display: block;
+        margin-top: 6px;
+        font-size: 16px;
+      }
+
+      .chip-row,
+      .stat-grid,
+      .evidence-grid,
+      .issue-grid {
+        display: grid;
+        gap: 16px;
+      }
+
+      .chip-row {
+        grid-template-columns: repeat(auto-fit, minmax(180px, max-content));
+        margin-top: 18px;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        min-height: 40px;
+        padding: 0 16px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.72);
+        color: var(--ink);
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .layout {
+        display: grid;
+        gap: 18px;
+        margin-top: 18px;
+      }
+
+      .panel {
+        padding: 24px;
+      }
+
+      .stat-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        margin-top: 18px;
+      }
+
+      .stat {
+        padding: 18px;
+        border-radius: var(--radius-lg);
+        background: var(--panel-strong);
+        border: 1px solid var(--line);
+      }
+
+      .stat__value {
+        margin-top: 8px;
+        font-size: 34px;
+        line-height: 1;
+        font-weight: 800;
+      }
+
+      .stat--p0 .stat__value,
+      .pill--p0 {
+        color: var(--danger);
+      }
+
+      .stat--p1 .stat__value,
+      .pill--p1 {
+        color: var(--warn);
+      }
+
+      .stat--p2 .stat__value,
+      .pill--p2 {
+        color: var(--info);
+      }
+
+      .stat--p3 .stat__value,
+      .pill--p3 {
+        color: var(--ok);
+      }
+
+      .evidence-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 18px;
+      }
+
+      .evidence-card {
+        overflow: hidden;
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--line);
+        background: var(--panel-strong);
+      }
+
+      .evidence-card__head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .evidence-card img {
+        display: block;
+        width: 100%;
+        height: auto;
+        background: #e8ebef;
+      }
+
+      .table-wrap {
+        margin-top: 18px;
+        overflow: auto;
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--line);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--panel-strong);
+      }
+
+      th,
+      td {
+        padding: 14px 16px;
+        text-align: left;
+        vertical-align: top;
+        border-bottom: 1px solid var(--line);
+      }
+
+      th {
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      td {
+        font-size: 14px;
+        line-height: 1.65;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        padding: 0 10px;
+        border-radius: 999px;
+        border: 1px solid currentColor;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+      }
+
+      .issue-grid {
+        margin-top: 18px;
+      }
+
+      .issue-card {
+        padding: 24px;
+      }
+
+      .issue-card__head {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: flex-start;
+      }
+
+      .issue-card__title {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .issue-card__title h3 {
+        font-size: 22px;
+        line-height: 1.15;
+      }
+
+      .issue-card__meta {
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .issue-card__body {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
+        gap: 18px;
+        margin-top: 18px;
+      }
+
+      .issue-block {
+        padding: 18px;
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--line);
+        background: var(--panel-strong);
+      }
+
+      .issue-block + .issue-block {
+        margin-top: 14px;
+      }
+
+      .issue-block__title {
+        margin-bottom: 10px;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .issue-block p,
+      .issue-block li {
+        font-size: 14px;
+        line-height: 1.7;
+      }
+
+      .issue-block ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+
+      .footer-note {
+        margin-top: 18px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.7;
+      }
+
+      @media (max-width: 980px) {
+        .hero,
+        .issue-card__body,
+        .evidence-grid,
+        .stat-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="report">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Design Implementation Audit</p>
+          <h1 id="report-title"></h1>
+          <p class="hero__summary" id="report-summary"></p>
+          <div class="chip-row">
+            <div class="chip" id="chip-page"></div>
+            <div class="chip" id="chip-state"></div>
+            <div class="chip" id="chip-viewport"></div>
+            <div class="chip" id="chip-result"></div>
+          </div>
+        </div>
+        <div class="hero__meta">
+          <div class="meta-card">
+            <p class="meta-label">检查环境</p>
+            <strong id="environment"></strong>
+          </div>
+          <div class="meta-card">
+            <p class="meta-label">设计来源</p>
+            <strong id="design-source"></strong>
+          </div>
+          <div class="meta-card">
+            <p class="meta-label">检查范围</p>
+            <strong id="scope"></strong>
+          </div>
+          <div class="meta-card">
+            <p class="meta-label">检查时间</p>
+            <strong id="review-time"></strong>
+          </div>
+        </div>
+      </section>
+
+      <div class="layout">
+        <section class="panel">
+          <p class="section-label">Summary</p>
+          <h2>问题概览</h2>
+          <div class="stat-grid">
+            <div class="stat stat--p0">
+              <p class="meta-label">P0</p>
+              <div class="stat__value" id="p0-count"></div>
+            </div>
+            <div class="stat stat--p1">
+              <p class="meta-label">P1</p>
+              <div class="stat__value" id="p1-count"></div>
+            </div>
+            <div class="stat stat--p2">
+              <p class="meta-label">P2</p>
+              <div class="stat__value" id="p2-count"></div>
+            </div>
+            <div class="stat stat--p3">
+              <p class="meta-label">P3</p>
+              <div class="stat__value" id="p3-count"></div>
+            </div>
+          </div>
+          <p class="footer-note" id="summary-note"></p>
+        </section>
+
+        <section class="panel">
+          <p class="section-label">Visual Evidence</p>
+          <h2>设计稿与实际页对照</h2>
+          <div class="evidence-grid">
+            <article class="evidence-card">
+              <div class="evidence-card__head">
+                <strong>MasterGo 设计稿</strong>
+                <span class="pill" id="design-label"></span>
+              </div>
+              <img id="design-image" src="" alt="MasterGo design reference" />
+            </article>
+            <article class="evidence-card">
+              <div class="evidence-card__head">
+                <strong>真实页面截图</strong>
+                <span class="pill" id="page-label"></span>
+              </div>
+              <img id="page-image" src="" alt="Real page screenshot" />
+            </article>
+          </div>
+        </section>
+
+        <section class="panel">
+          <p class="section-label">Issue Table</p>
+          <h2>问题汇总</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Issue ID</th>
+                  <th>Severity</th>
+                  <th>Category</th>
+                  <th>Module</th>
+                  <th>Summary</th>
+                  <th>Suggested Fix</th>
+                </tr>
+              </thead>
+              <tbody id="issue-table-rows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel">
+          <p class="section-label">Detailed Findings</p>
+          <h2>问题详情</h2>
+          <div class="issue-grid" id="issue-cards"></div>
+        </section>
+
+        <section class="panel">
+          <p class="section-label">Out Of Scope</p>
+          <h2>不在本次范围 / 阻塞项</h2>
+          <div class="issue-block">
+            <div class="issue-block__title">说明</div>
+            <p id="blocked-or-out-of-scope"></p>
+          </div>
+        </section>
+      </div>
+    </main>
+    <script>
+      const demoData = {
+        reportTitle: "商品列表页 UI 设计还原度走查报告",
+        reportSummary:
+          "本次检查聚焦提测阶段的首屏还原度。页面结构已经基本到位，但 Header 搜索区、筛选按钮状态和表格排版仍存在明显偏差，建议修复后再进入正式验收。",
+        pageName: "商品列表页",
+        targetState: "默认加载完成态",
+        viewport: "1440x900",
+        acceptanceResult: "有条件验收",
+        environment: "预发环境",
+        designSource: "MasterGo / file 842917 / layer 13:204",
+        scope: "Header、筛选区、表格首屏",
+        reviewTime: "2026-06-03 15:30",
+        counts: { p0: 0, p1: 2, p2: 1, p3: 0 },
+        summaryNote:
+          "当前没有阻塞级 P0，但存在 2 个核心区域明显偏差。建议先修 Header 搜索区和 Disabled 按钮状态，再复验列表首屏密度。",
+        designLabel: "目标状态",
+        pageLabel: "提测截图",
+        designImageUrl: "",
+        pageImageUrl: "",
+        blockedOrOutOfScope:
+          "移动端断点、弹窗二级状态和空态页面不在本次检查范围内。当前报告仅覆盖桌面端 1440x900 首屏。",
+        issues: [
+          {
+            id: "ISSUE-01",
+            severity: "P1",
+            category: "布局与间距",
+            module: "Header 搜索区",
+            summary: "搜索输入框高度比设计稿少 4px，导致与右侧主按钮底边不齐。",
+            expected:
+              "输入框与主按钮高度一致，底边对齐，搜索图标和占位文字垂直居中。",
+            actual:
+              "输入框视觉高度偏小，按钮更高；搜索图标与占位文字整体偏上。",
+            impact:
+              "首屏核心操作区一眼可见不整齐，属于提测阶段应修复的明显还原偏差。",
+            evidence: [
+              "设计稿：搜索框与按钮等高，控件组对齐稳定。",
+              "实际页：输入框高度偏小，底边上浮。"
+            ],
+            suggestedFix:
+              "统一输入框与主按钮容器高度，检查 input wrapper padding 与 icon line-height，保证图标和文字使用同一套垂直居中策略。",
+            acceptanceCheck:
+              "修复后，输入框、按钮、图标、占位文字在同一基线，首屏无明显错位。"
+          },
+          {
+            id: "ISSUE-02",
+            severity: "P1",
+            category: "组件状态",
+            module: "筛选区 Disabled 按钮",
+            summary: "Disabled 按钮仅降低文字透明度，背景和边框仍接近默认态。",
+            expected:
+              "Disabled 态应整体降权，背景、边框、文字同时变浅，并明显区别于可点击态。",
+            actual:
+              "当前按钮轮廓仍然突出，视觉上仍像可点击态。",
+            impact:
+              "会误导用户判断操作状态，也影响组件规范的一致性验收。",
+            evidence: [
+              "设计稿：Disabled 态按钮整体降权，边框和填充都更弱。",
+              "实际页：只有文字变灰，按钮轮廓仍突出。"
+            ],
+            suggestedFix:
+              "同步调整 background-color、border-color、text color；优先复用项目已有 Button disabled token，而不是页面局部覆写。",
+            acceptanceCheck:
+              "Disabled 态从远看即可与默认态区分，不再产生“可点击”误解。"
+          },
+          {
+            id: "ISSUE-03",
+            severity: "P2",
+            category: "字体与排版",
+            module: "列表表头与数据行",
+            summary: "表格行高偏小，长文案在当前视口下显得拥挤。",
+            expected:
+              "表头与正文应有更充足的垂直留白，长文案在首屏保持可读且不压缩。",
+            actual:
+              "表头和数据行行高偏紧，第二列与第四列文案贴近上下边界。",
+            impact:
+              "虽然不阻塞功能，但会降低高频列表区域的可读性。",
+            evidence: [
+              "设计稿：表头与正文留白均匀，信息密度适中。",
+              "实际页：行高偏小，长文案有被压扁的观感。"
+            ],
+            suggestedFix:
+              "统一检查 row height、cell padding 与 font line-height，优先调整垂直 padding，不建议单纯放大字号。",
+            acceptanceCheck:
+              "在 1440x900 视口下，首屏表格信息密度与设计稿接近，长文案不再显得拥挤。"
+          }
+        ]
+      };
+
+      function escapeHtml(value) {
+        return String(value)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function createPlaceholderImage(title, tone) {
+        const svg = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760">
+            <defs>
+              <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="${tone[0]}"/>
+                <stop offset="100%" stop-color="${tone[1]}"/>
+              </linearGradient>
+            </defs>
+            <rect width="1200" height="760" rx="28" fill="url(#bg)"/>
+            <rect x="40" y="40" width="1120" height="80" rx="20" fill="rgba(255,255,255,0.72)"/>
+            <rect x="40" y="150" width="1120" height="150" rx="24" fill="rgba(255,255,255,0.82)"/>
+            <rect x="40" y="330" width="1120" height="360" rx="24" fill="rgba(255,255,255,0.9)"/>
+            <text x="74" y="92" font-size="26" font-family="Arial, sans-serif" fill="#1f2530">${title}</text>
+            <text x="74" y="214" font-size="54" font-weight="700" font-family="Arial, sans-serif" fill="#1f2530">Preview Placeholder</text>
+            <text x="74" y="264" font-size="24" font-family="Arial, sans-serif" fill="#465062">Replace with real screenshot URL when generating the final report.</text>
+            <rect x="74" y="382" width="310" height="40" rx="12" fill="${tone[2]}"/>
+            <rect x="74" y="446" width="1052" height="26" rx="10" fill="rgba(31,37,48,0.1)"/>
+            <rect x="74" y="494" width="998" height="26" rx="10" fill="rgba(31,37,48,0.08)"/>
+            <rect x="74" y="542" width="1040" height="26" rx="10" fill="rgba(31,37,48,0.1)"/>
+            <rect x="74" y="590" width="930" height="26" rx="10" fill="rgba(31,37,48,0.08)"/>
+          </svg>`;
+        return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+      }
+
+      function severityClass(severity) {
+        return `pill--${severity.toLowerCase()}`;
+      }
+
+      function fillText(id, value) {
+        const node = document.getElementById(id);
+        if (node) node.textContent = value;
+      }
+
+      function renderTableRows(issues) {
+        return issues
+          .map(
+            (issue) => `
+              <tr>
+                <td>${escapeHtml(issue.id)}</td>
+                <td><span class="pill ${severityClass(issue.severity)}">${escapeHtml(issue.severity)}</span></td>
+                <td>${escapeHtml(issue.category)}</td>
+                <td>${escapeHtml(issue.module)}</td>
+                <td>${escapeHtml(issue.summary)}</td>
+                <td>${escapeHtml(issue.suggestedFix)}</td>
+              </tr>
+            `
+          )
+          .join("");
+      }
+
+      function renderIssueCards(issues) {
+        return issues
+          .map(
+            (issue) => `
+              <article class="issue-card">
+                <div class="issue-card__head">
+                  <div>
+                    <div class="issue-card__title">
+                      <span class="pill ${severityClass(issue.severity)}">${escapeHtml(issue.severity)}</span>
+                      <h3>${escapeHtml(issue.id)}</h3>
+                    </div>
+                    <p class="issue-card__meta">${escapeHtml(issue.category)} / ${escapeHtml(issue.module)}</p>
+                  </div>
+                </div>
+                <div class="issue-card__body">
+                  <div>
+                    <div class="issue-block">
+                      <div class="issue-block__title">Summary</div>
+                      <p>${escapeHtml(issue.summary)}</p>
+                    </div>
+                    <div class="issue-block">
+                      <div class="issue-block__title">Expected</div>
+                      <p>${escapeHtml(issue.expected)}</p>
+                    </div>
+                    <div class="issue-block">
+                      <div class="issue-block__title">Actual</div>
+                      <p>${escapeHtml(issue.actual)}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="issue-block">
+                      <div class="issue-block__title">Impact</div>
+                      <p>${escapeHtml(issue.impact)}</p>
+                    </div>
+                    <div class="issue-block">
+                      <div class="issue-block__title">Evidence</div>
+                      <ul>
+                        ${issue.evidence.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+                      </ul>
+                    </div>
+                    <div class="issue-block">
+                      <div class="issue-block__title">Suggested Fix</div>
+                      <p>${escapeHtml(issue.suggestedFix)}</p>
+                    </div>
+                    <div class="issue-block">
+                      <div class="issue-block__title">Acceptance Check</div>
+                      <p>${escapeHtml(issue.acceptanceCheck)}</p>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            `
+          )
+          .join("");
+      }
+
+      function renderReport(data) {
+        document.title = data.reportTitle;
+        fillText("report-title", data.reportTitle);
+        fillText("report-summary", data.reportSummary);
+        fillText("chip-page", `页面：${data.pageName}`);
+        fillText("chip-state", `状态：${data.targetState}`);
+        fillText("chip-viewport", `视口：${data.viewport}`);
+        fillText("chip-result", `结论：${data.acceptanceResult}`);
+        fillText("environment", data.environment);
+        fillText("design-source", data.designSource);
+        fillText("scope", data.scope);
+        fillText("review-time", data.reviewTime);
+        fillText("p0-count", data.counts.p0);
+        fillText("p1-count", data.counts.p1);
+        fillText("p2-count", data.counts.p2);
+        fillText("p3-count", data.counts.p3);
+        fillText("summary-note", data.summaryNote);
+        fillText("design-label", data.designLabel);
+        fillText("page-label", data.pageLabel);
+        fillText("blocked-or-out-of-scope", data.blockedOrOutOfScope);
+
+        const designImage = document.getElementById("design-image");
+        const pageImage = document.getElementById("page-image");
+        designImage.src =
+          data.designImageUrl ||
+          createPlaceholderImage("MasterGo Design Reference", ["#dcefe8", "#f6e7cf", "#1c6e5e"]);
+        pageImage.src =
+          data.pageImageUrl ||
+          createPlaceholderImage("Live Page Screenshot", ["#e3e9f7", "#f8e4dd", "#335fbe"]);
+
+        document.getElementById("issue-table-rows").innerHTML = renderTableRows(data.issues);
+        document.getElementById("issue-cards").innerHTML = renderIssueCards(data.issues);
+      }
+
+      renderReport(window.REPORT_DATA || demoData);
+    </script>
+  </body>
+</html>
