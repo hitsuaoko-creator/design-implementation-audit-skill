@@ -5,6 +5,10 @@ description: Compare a MasterGo design frame with a real implemented mobile or w
 
 # Design Implementation Audit
 
+This file is the Claude Code adapter for the repository-wide audit spec.
+
+If you are using another IDE or AI tool, use `AGENT-SPEC.md` and `prompts/universal-audit-prompt.zh-CN.md` instead of this adapter.
+
 Use this skill to audit one mobile page, one web page, or one page state at a time against a MasterGo design source and produce a developer-ready issue report.
 
 This skill is for acceptance and implementation parity checking, not for subjective redesign advice.
