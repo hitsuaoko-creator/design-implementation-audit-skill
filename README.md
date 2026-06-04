@@ -1,19 +1,8 @@
 # design-implementation-audit
 
-A tool-agnostic AI audit spec for design acceptance review, with a Claude Code adapter included.
+A Claude Code skill for design acceptance review.
 
 It compares a MasterGo design reference with a real implemented page or screenshot evidence, then outputs a developer-ready acceptance report with actionable issues.
-
-Language versions:
-
-- English: `README.md`
-- Simplified Chinese: `README.zh-CN.md`
-
-Core entry points:
-
-- universal spec: `AGENT-SPEC.md`
-- universal prompt: `prompts/universal-audit-prompt.zh-CN.md`
-- Claude Code adapter: `SKILL.md`
 
 ## What It Does
 
@@ -24,21 +13,6 @@ Core entry points:
 - outputs:
   - Markdown issue report
   - visual HTML report
-
-## Compatible Tools
-
-This repository is designed to work across AI tools, not only Claude Code.
-
-You can use the universal spec and prompt in:
-
-- Cursor
-- Windsurf
-- VS Code chat tools
-- ChatGPT projects
-- Gemini or other AI workspaces
-- custom internal IDE agents
-
-Claude Code support is kept as a native adapter through `SKILL.md`.
 
 ## Best Fit
 
@@ -61,13 +35,9 @@ Do not use it for:
 
 ```text
 .
-├── AGENT-SPEC.md
 ├── SKILL.md
 ├── README.md
-├── README.zh-CN.md
 ├── install-skill.sh
-├── prompts/
-│   └── universal-audit-prompt.zh-CN.md
 ├── assets/
 │   ├── audit-input-example.yaml
 │   └── report-template.html
@@ -78,23 +48,14 @@ Do not use it for:
 
 ## Install
 
-### Option 1: Use it in any AI tool
-
-Copy either of these into your tool:
-
-- `AGENT-SPEC.md` for the workflow contract
-- `prompts/universal-audit-prompt.zh-CN.md` for a ready-to-run Chinese prompt
-
-This mode does not depend on Claude Code.
-
-### Option 2: Install into Claude Code from GitHub
+### Option 1: Install from GitHub
 
 ```bash
 python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
   https://github.com/hitsuaoko-creator/design-implementation-audit-skill
 ```
 
-### Option 3: Install into Claude Code from a local clone
+### Option 2: Install from a local clone
 
 ```bash
 git clone https://github.com/hitsuaoko-creator/design-implementation-audit-skill.git
@@ -103,22 +64,12 @@ chmod +x install-skill.sh
 ./install-skill.sh
 ```
 
-The local install script copies the Claude adapter into:
+The local install script copies the skill into:
 
 - `~/.codex/skills/design-implementation-audit`
 - `~/.claude/skills/design-implementation-audit` if `~/.claude/skills` already exists
 
 ## How To Trigger It
-
-### In any AI tool or IDE assistant
-
-Paste the universal prompt from `prompts/universal-audit-prompt.zh-CN.md`, then attach or provide:
-
-- the MasterGo reference
-- the real page URL or screenshot evidence
-- the audit scope
-
-### In Claude Code
 
 The most reliable trigger is to name the skill directly:
 
@@ -140,7 +91,7 @@ It should also trigger for requests like:
 
 ## Input Model
 
-This audit spec uses two inputs:
+This skill uses two inputs:
 
 1. `design_reference`
 2. `implementation_target`
@@ -248,9 +199,4 @@ Recommended workflow:
 
 ## Publish Notes
 
-This repository is intended to be used in two modes:
-
-- as a universal AI audit prompt/spec bundle
-- as a local Claude Code skill bundle
-
-It does not need any backend service to work as a spec-driven review workflow.
+This repository is intended to be cloned or installed as a local skill bundle. It does not need any backend service to work as a spec-driven skill.
