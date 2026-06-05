@@ -155,14 +155,45 @@ implementation_target:
 
 audit_scope:
   page_name: "商品列表页"
-  modules: "Header、筛选区、表格首屏"
-  focus_points: "间距、字号、按钮状态、表格密度"
+  modules: "AUTO"
+  focus_points: "AUTO"
   ignore_list: "营销浮层、实验开关位"
   env_note: "预发环境，部分字段为 mock 数据"
   severity_rule: "默认输出 P0-P2，P3 仅在影响一致性时输出"
 ```
 
 完整样例见：`assets/audit-input-example.yaml`
+
+### `AUTO` 默认值
+
+团队使用时，`modules` 和 `focus_points` 不需要每次手动录入。
+
+推荐默认写法：
+
+```yaml
+audit_scope:
+  page_name: "页面名"
+  modules: "AUTO"
+  focus_points: "AUTO"
+```
+
+含义：
+
+- `modules: AUTO` = 自动检查当前截图或画板中所有可见主要模块
+- `focus_points: AUTO` = 自动使用通用默认检查清单
+
+默认检查清单包括：
+
+- 布局与间距
+- 尺寸与对齐
+- 字体与排版
+- 颜色与视觉样式
+- 信息层级
+- 组件状态
+- 图标与图片表现
+- 安全区处理
+- 文案承载与截断
+- 缺失与冗余元素
 
 ## 移动端截图规则
 

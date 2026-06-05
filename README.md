@@ -191,12 +191,43 @@ implementation_target:
 
 audit_scope:
   page_name: "商品列表页"
-  modules: "Header、筛选区、表格首屏"
+  modules: "AUTO"
   login_steps: "先登录，再进入商品列表页"
-  focus_points: "间距、字号、按钮状态"
+  focus_points: "AUTO"
 ```
 
 For a ready-made input file, see `assets/audit-input-example.yaml`.
+
+### Default `AUTO` inputs
+
+For team usage, `modules` and `focus_points` do not need manual entry every time.
+
+Recommended default:
+
+```yaml
+audit_scope:
+  page_name: "页面名"
+  modules: "AUTO"
+  focus_points: "AUTO"
+```
+
+Meaning:
+
+- `modules: AUTO` = inspect all major visible modules in the current frame or screenshot
+- `focus_points: AUTO` = use the default universal checklist
+
+Default checklist includes:
+
+- layout and spacing
+- size and alignment
+- typography
+- color and visual style
+- information hierarchy
+- component states
+- icon and image presentation
+- safe area handling
+- text truncation and content carrying
+- missing or extra elements
 
 ## Mobile Screenshot Rule
 

@@ -80,6 +80,33 @@ Recommended fields:
 - `env_note`
 - `severity_rule`
 
+Default `AUTO` behavior:
+
+- if `modules` is omitted or set to `AUTO`, inspect all major visible modules in the current frame or screenshot
+- if `focus_points` is omitted or set to `AUTO`, use the default universal checklist
+
+Default module coverage for `modules: AUTO`:
+
+- navigation bar or header
+- top action area
+- primary content area
+- list, card, or table area
+- bottom bar, floating action area, or fixed footer if visible
+- modal, popover, toast, context menu, or overlay if visible
+
+Default checklist for `focus_points: AUTO`:
+
+- layout and spacing
+- size and alignment
+- typography including font size, weight, and line height
+- color and visual style
+- information hierarchy
+- component states
+- icon and image presentation
+- safe area handling
+- text truncation and content carrying
+- missing or extra elements
+
 ## Mandatory Rules
 
 ### 1. Scope lock
@@ -128,6 +155,10 @@ Prioritize:
 - component states
 - safe area handling
 - missing or extra elements
+
+If `modules: AUTO` is used, infer the visible module breakdown from the screenshot or page and report under stable module names.
+
+If `focus_points: AUTO` is used, apply the full default checklist without asking the user to enumerate focus areas.
 
 ### 5. Issue quality bar
 
