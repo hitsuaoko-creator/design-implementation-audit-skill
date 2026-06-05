@@ -52,14 +52,14 @@
 
 ```bash
 python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
-  https://github.com/hitsuaoko-creator/design-implementation-audit-skill
+  https://github.com/hitsuaoko-creator/ui-check
 ```
 
 ### 方式 2：本地克隆后安装
 
 ```bash
-git clone https://github.com/hitsuaoko-creator/design-implementation-audit-skill.git
-cd design-implementation-audit-skill
+git clone https://github.com/hitsuaoko-creator/ui-check.git
+cd ui-check
 chmod +x install-skill.sh
 ./install-skill.sh
 ```

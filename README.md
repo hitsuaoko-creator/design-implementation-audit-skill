@@ -52,14 +52,14 @@ Do not use it for:
 
 ```bash
 python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
-  https://github.com/hitsuaoko-creator/design-implementation-audit-skill
+  https://github.com/hitsuaoko-creator/ui-check
 ```
 
 ### Option 2: Install from a local clone
 
 ```bash
-git clone https://github.com/hitsuaoko-creator/design-implementation-audit-skill.git
-cd design-implementation-audit-skill
+git clone https://github.com/hitsuaoko-creator/ui-check.git
+cd ui-check
 chmod +x install-skill.sh
 ./install-skill.sh
 ```
