@@ -1,4 +1,4 @@
-# design-implementation-audit
+# ui-check
 
 A Claude Code skill for design acceptance review.
 
@@ -66,21 +66,21 @@ chmod +x install-skill.sh
 
 The local install script copies the skill into:
 
-- `~/.codex/skills/design-implementation-audit`
-- `~/.claude/skills/design-implementation-audit` if `~/.claude/skills` already exists
+- `~/.codex/skills/ui-check`
+- `~/.claude/skills/ui-check` if `~/.claude/skills` already exists
 
 ## How To Trigger It
 
 The most reliable trigger is to name the skill directly:
 
 ```text
-用 design-implementation-audit 这个 skill，帮我做移动端设计验收走查。
+用 ui-check 这个 skill，帮我做移动端设计验收走查。
 ```
 
 Or:
 
 ```text
-请按 design-implementation-audit 的方式，对比 MasterGo 和实现截图，输出问题验收列表。
+请按 ui-check 的方式，对比 MasterGo 和实现截图，输出问题验收列表。
 ```
 
 It should also trigger for requests like:
@@ -200,3 +200,7 @@ Recommended workflow:
 ## Publish Notes
 
 This repository is intended to be cloned or installed as a local skill bundle. It does not need any backend service to work as a spec-driven skill.
+
+## License
+
+MIT

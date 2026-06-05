@@ -3,7 +3,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-SKILL_NAME="design-implementation-audit"
+SKILL_NAME="ui-check"
 
 install_skill() {
   local base_dir="$1"
@@ -29,4 +29,4 @@ fi
 echo
 echo "Skill installation complete."
 echo "Trigger with:"
-echo "用 design-implementation-audit 这个 skill，帮我做设计验收走查。"
+echo "用 ui-check 这个 skill，帮我做设计验收走查。"

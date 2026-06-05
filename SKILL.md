@@ -1,9 +1,9 @@
 ---
-name: design-implementation-audit
+name: ui-check
 description: Compare a MasterGo design frame with a real implemented mobile or web page during QA, integration, or release acceptance. Use when the user wants UI parity checking, design acceptance, implementation gap analysis, or a developer-ready issue report based on MasterGo and a real page URL or screenshot evidence.
 ---
 
-# Design Implementation Audit
+# UI Check
 
 Use this skill to audit one mobile page, one web page, or one page state at a time against a MasterGo design source and produce a developer-ready issue report.
 
