@@ -1,8 +1,25 @@
 # ui-check
 
-一个用于设计验收的 Claude Code skill。
+一个用于设计验收的通用 AI 能力仓库，内置 Claude Code 适配器，但不依赖 Claude Code 才能使用。
 
 它用于把 `MasterGo 设计基准` 和 `真实实现页面 / 截图证据` 做对比，输出一份研发可直接修复的问题验收报告。
+
+## 不是只给 Claude Code 用的
+
+你可以把 `ui-check` 用在这些平台：
+
+- Claude Code
+- Cursor
+- Windsurf
+- VS Code AI 助手
+- ChatGPT Projects
+- Gemini
+- 企业内部 Agent / Copilot
+
+仓库分成两层：
+
+- 通用能力层：`AGENT-SPEC.md` + `prompts/universal-audit-prompt.zh-CN.md`
+- Claude Code 适配层：`SKILL.md`
 
 ## 它能做什么
 
@@ -33,10 +50,13 @@
 
 ```text
 .
+├── AGENT-SPEC.md
 ├── SKILL.md
 ├── README.md
 ├── README.zh-CN.md
 ├── LICENSE
+├── prompts/
+│   └── universal-audit-prompt.zh-CN.md
 ├── install-skill.sh
 ├── assets/
 │   ├── audit-input-example.yaml
@@ -48,14 +68,24 @@
 
 ## 安装
 
-### 方式 1：从 GitHub 安装
+### 方式 1：在任意 AI 工具里直接使用
+
+直接使用这三个文件：
+
+- `AGENT-SPEC.md`
+- `prompts/universal-audit-prompt.zh-CN.md`
+- `assets/audit-input-example.yaml`
+
+这种方式不依赖 Claude Code。
+
+### 方式 2：从 GitHub 安装到 Claude Code
 
 ```bash
 python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
   https://github.com/hitsuaoko-creator/ui-check
 ```
 
-### 方式 2：本地克隆后安装
+### 方式 3：本地克隆后安装到 Claude Code
 
 ```bash
 git clone https://github.com/hitsuaoko-creator/ui-check.git
@@ -64,12 +94,24 @@ chmod +x install-skill.sh
 ./install-skill.sh
 ```
 
-安装脚本会把 skill 安装到：
+安装脚本会把 Claude 适配层安装到：
 
 - `~/.codex/skills/ui-check`
 - 如果存在 `~/.claude/skills`，也会同步安装到 `~/.claude/skills/ui-check`
 
 ## 如何触发
+
+### 在任意 AI 工具里
+
+把 `prompts/universal-audit-prompt.zh-CN.md` 的内容复制到你的 AI 工具里，再提供：
+
+- `design_reference`
+- `implementation_target`
+- `audit_scope`
+
+如果工具支持附件，就把截图一起传进去。
+
+### 在 Claude Code 里
 
 最稳的方式是直接点名：
 
@@ -85,7 +127,7 @@ chmod +x install-skill.sh
 
 ## 输入模型
 
-这个 skill 使用双输入模型：
+这个能力使用双输入模型：
 
 1. `design_reference`
 2. `implementation_target`
@@ -133,7 +175,7 @@ audit_scope:
 
 ## 输出内容
 
-skill 会生成：
+能力会生成：
 
 1. 基于 `references/report-template.md` 的 Markdown 报告
 2. 基于 `assets/report-template.html` 的 HTML 图文报告

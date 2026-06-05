@@ -1,8 +1,13 @@
 # ui-check
 
-A Claude Code skill for design acceptance review.
+A platform-agnostic AI capability for UI design acceptance review, with a Claude Code adapter included.
 
 It compares a MasterGo design reference with a real implemented page or screenshot evidence, then outputs a developer-ready acceptance report with actionable issues.
+
+Language versions:
+
+- English: `README.md`
+- Simplified Chinese: `README.zh-CN.md`
 
 ## What It Does
 
@@ -13,6 +18,25 @@ It compares a MasterGo design reference with a real implemented page or screensh
 - outputs:
   - Markdown issue report
   - visual HTML report
+
+## Compatible Platforms
+
+`ui-check` is not limited to Claude Code.
+
+You can use the same capability in:
+
+- Claude Code
+- Cursor
+- Windsurf
+- VS Code AI assistants
+- ChatGPT Projects
+- Gemini workspaces
+- internal agent platforms
+
+The repository is organized in two layers:
+
+- universal capability layer: `AGENT-SPEC.md` + `prompts/universal-audit-prompt.zh-CN.md`
+- Claude Code adapter: `SKILL.md`
 
 ## Best Fit
 
@@ -35,8 +59,12 @@ Do not use it for:
 
 ```text
 .
+├── AGENT-SPEC.md
 ├── SKILL.md
 ├── README.md
+├── README.zh-CN.md
+├── prompts/
+│   └── universal-audit-prompt.zh-CN.md
 ├── install-skill.sh
 ├── assets/
 │   ├── audit-input-example.yaml
@@ -48,14 +76,24 @@ Do not use it for:
 
 ## Install
 
-### Option 1: Install from GitHub
+### Option 1: Use in any AI tool
+
+Use these files directly:
+
+- `AGENT-SPEC.md`: the execution contract
+- `prompts/universal-audit-prompt.zh-CN.md`: the ready-to-run Chinese prompt
+- `assets/audit-input-example.yaml`: the input shape
+
+This mode does not require Claude Code.
+
+### Option 2: Install into Claude Code from GitHub
 
 ```bash
 python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
   https://github.com/hitsuaoko-creator/ui-check
 ```
 
-### Option 2: Install from a local clone
+### Option 3: Install into Claude Code from a local clone
 
 ```bash
 git clone https://github.com/hitsuaoko-creator/ui-check.git
@@ -64,12 +102,24 @@ chmod +x install-skill.sh
 ./install-skill.sh
 ```
 
-The local install script copies the skill into:
+The local install script copies the Claude adapter into:
 
 - `~/.codex/skills/ui-check`
 - `~/.claude/skills/ui-check` if `~/.claude/skills` already exists
 
 ## How To Trigger It
+
+### In any AI tool
+
+Paste the content from `prompts/universal-audit-prompt.zh-CN.md`, then provide:
+
+- `design_reference`
+- `implementation_target`
+- `audit_scope`
+
+Attach screenshots if your tool supports file upload.
+
+### In Claude Code
 
 The most reliable trigger is to name the skill directly:
 
@@ -192,14 +242,19 @@ Recommended workflow:
 
 1. Design or QA provides the MasterGo link and target page state.
 2. QA or PM provides the real page URL or screenshots.
-3. Claude Code runs this skill.
+3. Any AI tool runs `ui-check` using the shared spec and prompt.
 4. Output is sent to design and engineering as:
    - Markdown for issue tracking
    - HTML for visual handoff
 
 ## Publish Notes
 
-This repository is intended to be cloned or installed as a local skill bundle. It does not need any backend service to work as a spec-driven skill.
+This repository is intended to work in two ways:
+
+- as a platform-agnostic AI review capability
+- as a local Claude Code skill bundle
+
+It does not need any backend service to work as a spec-driven skill.
 
 ## License
 
